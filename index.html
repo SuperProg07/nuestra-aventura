@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Aventura 💜</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@600&family=Quicksand:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --morado: #8e44ad;
+            --morado-brillante: #bc6ff1;
+            --blanco-cuadro: rgba(255, 255, 255, 0.88);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: url("static/fotos/home.jpg");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        #inicio {
+            text-align: center;
+            animation: fadeIn 1.5s ease;
+            background-color: var(--blanco-cuadro);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 450px;
+            width: 85%;
+            backdrop-filter: blur(10px);
+            color: #000;
+        }
+
+        /* Contenedor del corazón e iniciales */
+        .corazon-container {
+            position: relative;
+            display: inline-block;
+            animation: palpito 1.2s infinite;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px var(--morado));
+        }
+
+        .corazon {
+            font-size: 100px; /* Un poco más grande para que quepan las letras */
+            color: var(--morado);
+            display: block;
+        }
+
+        .iniciales {
+            position: absolute;
+            top: 45%; /* Ajuste fino para centrar verticalmente */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Dancing Script', cursive;
+            font-size: 22px; /* Tamaño ideal para que no rompa el corazón */
+            color: white;
+            font-weight: bold;
+            white-space: nowrap;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        @keyframes palpito {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.2); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.1); }
+            60% { transform: scale(1); }
+        }
+
+        .bienvenida-txt {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            color: black;
+        }
+
+        .btn-aventura, .btn-propuesta-si, .btn-propuesta-no {
+            background-color: white;
+            color: black;
+            border: 2px solid var(--morado);
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .btn-aventura:hover, .btn-propuesta-si:hover {
+            transform: scale(1.05);
+            background-color: var(--morado);
+            color: white;
+        }
+        
+        .btn-propuesta-no:hover {
+            background-color: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+
+        #galeria {
+            display: none;
+            width: 92%;
+            max-width: 550px;
+            text-align: center;
+            padding: 20px;
+            margin: 10px auto;
+            background-color: var(--blanco-cuadro);
+            backdrop-filter: blur(12px);
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            max-height: 98vh; 
+            overflow: hidden;
+            color: #000;
+        }
+
+        .contenedor-media {
+            position: relative;
+            width: 100%;
+            height: 55vh;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 2px solid var(--morado);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .item-media {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            display: none;
+            background-color: #000;
+        }
+
+        .item-media.active { 
+            display: block; 
+        }
+
+        .leyenda {
+            margin-top: 15px;
+            padding: 0 10px;
+            min-height: 80px;
+            color: #000;
+        }
+
+        .leyenda-fecha { 
+            font-family: 'Montserrat', sans-serif; 
+            font-weight: 600; 
+            font-size: 1.2rem;
+            display: block; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #000;
+        }
+
+        .leyenda-texto { 
+            font-family: 'Quicksand', sans-serif;
+            font-style: italic; 
+            font-size: 1rem;
+            color: #222;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .click-izq, .click-der {
+            position: absolute;
+            top: 0; height: 100%; width: 50%; z-index: 10; cursor: pointer;
+        }
+        .click-izq { left: 0; }
+        .click-der { right: 0; }
+
+        #cuadro-propuesta {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+            z-index: 20;
+            border: 3px solid var(--morado);
+            width: 80%;
+            color: #000;
+        }
+
+        .pregunta-propuesta {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        #slide-final-content {
+            display: none;
+            padding: 20px;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #000;
+            text-align: center;
+            animation: fadeIn 1s ease;
+        }
+
+        #slide-final-content p {
+            margin: 10px 0;
+        }
+
+        .firma {
+            text-align: right;
+            font-family: 'Dancing Script', cursive;
+            color: var(--morado);
+            font-size: 1.5rem;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div id="inicio">
+        <div class="corazon-container">
+            <div class="corazon">💜</div>
+            <span class="iniciales">J + S</span>
+        </div>
+        <div class="bienvenida-txt">Bienvenida a esta Aventura</div>
+        <button class="btn-aventura" id="btnGo" onclick="mostrarGaleria()" style="display:none;">Comenzar</button>
+    </div>
+
+    <div id="galeria">
+        <div class="contenedor-media">
+            
+            <video class="item-media active" data-f="AQUI COMIENZA TODO" data-t="Todo inicio con un beso y un anillo con el que te miraba feliz" playsinline muted>
+                <source src="static/videos/video1.mp4" type="video/mp4">
+            </video>
+
+            <img src="static/fotos/f0.jpg" class="item-media" data-f="FOTO FAVORITA" data-t="12 OCT 2025/ Quede engatuzado con tus Ojitos Lindos">
+            <img src="static/fotos/f1.jpg" class="item-media" data-f="SALIDA IMPROVISADA" data-t="Aqui probe que mi locura iba de la mano con la tuya">
+            <img src="static/fotos/f2.jpg" class="item-media" data-f="NUESTRO PRIMER REDIL" data-t="Confirme que eras para mi y Dios me confio un corazon mas valioso que el mio">
+            <img src="static/fotos/f3.jpg" class="item-media" data-f="ERES TODO PARA MI" data-t="5 OCT 2025/ No me importaba nada mas que estar a tu lado">
+            <img src="static/fotos/f4.jpg" class="item-media" data-f="MEMORIA" data-t="Aun me acuerdo que dijeron awww que tiernos">
+            <img src="static/fotos/f5.jpg" class="item-media" data-f="LA MEJOR NOCHE" data-t="Me mostraste que contigo todo es mejor">
+            <img src="static/fotos/f6.jpg" class="item-media" data-f="DEJE MI MIEDO" data-t="Contigo me sentí tan seguro que deje mi miedo a amar en todos los lenguajes posibles">
+            <img src="static/fotos/f7.jpg" class="item-media" data-f="GRADO" data-t="El día que me gradué y tú estabas ahí, fue el mejor regalo que pude recibir">
+            <img src="static/fotos/f8.jpg" class="item-media" data-f="NUESTROS PIMPOLLITOS" data-t="Desde este momento confirme que queria formar una familia contigo">
+            <img src="static/fotos/f9.jpg" class="item-media" data-f="MEMORIA" data-t="Aqui pense y no te queria lejos de mi nunca mas">
+            <img src="static/fotos/f10.jpg" class="item-media" data-f="NAVIDAD JUNTOS" data-t="Navidad juntos suena mejor, que cada uno en su casa, no lo crees?">
+            <img src="static/fotos/f11.jpg" class="item-media" data-f="CUMPLEAÑOS" data-t="07 DIC 2025/Me olvide de mi dia pero tu siempre estuviste ahi para recordarmelo">
+            <img src="static/fotos/f12.jpg" class="item-media" data-f="PRUEBA" data-t="Estos recuerdos son los que tengo cuando pienso en ti, y me hacen amarte mas cada dia">
+            <img src="static/fotos/f13.jpg" class="item-media" data-f="PLANEAR" data-t="No como avion, sino como dos personas que se aman y quieren un felices para siempre">
+            <img src="static/fotos/f14.jpg" class="item-media" data-f="MAMASOTA" data-t="Me encantan tus ojitos, tus labios, tu cuerpo. tu corazoncito, toda tu grrr jajajaja">
+            <img src="static/fotos/f15.jpg" class="item-media" data-f="NUESTRA PRIMERA VEZ" data-t="No solo fue estar contigo, fue conectar y sentir que nos perteneciamos desde antes de conocernos">
+            <img src="static/fotos/f16.jpg" class="item-media" data-f="PERDON" data-t="Aunque la pase genial me senti muy mal porq en ese tiempo no tenia con que pagar">
+            <img src="static/fotos/f17.jpg" class="item-media" data-f="AMO💜" data-t="Ese dia apesar de que fue el ultimo que salimos, lo unico que pensaba en el choque eras tu, y que debia volverme a levantar para cumplirte cada parte de lo que un dia te prometi">
+            <img src="static/fotos/f18.jpg" class="item-media" data-f="CORAZON" data-t="Despues de todo lo que paso me estaba derrumbando, pero al verte tan tranquila y tan hermosa me di cuenta que lo unico que queria era abrazarte y decirte que te amo">
+            <img src="static/fotos/f19.jpg" class="item-media" data-f="MEMORIA" data-t="Solo pensaba en lo hermosa que eres y que debo agradercer a Dios por haberte traido a mi vida">
+            
+            <img src="static/fotos/f20.jpg" class="item-media" data-f="ESPERA AUN NO TERMINA" data-t="Tú y yo, el mejor equipo del mundo, solo falta... 10.">
+
+            <div class="click-izq" onclick="cambiar(-1)"></div>
+            <div class="click-der" onclick="cambiar(1)"></div>
+            
+            <div id="cuadro-propuesta">
+                <p class="pregunta-propuesta" id="texto-propuesta">¿Quieres Convertirte en Mi Esposa?</p>
+                <div id="botones-propuesta">
+                    <button class="btn-propuesta-si" onclick="aceptarPropuesta()">Sí</button>
+                    <button class="btn-propuesta-no" onclick="rechazarPropuesta()">No</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="leyenda" id="leyenda-container">
+            <span class="leyenda-fecha" id="l-fecha"></span>
+            <p class="leyenda-texto" id="l-texto"></p>
+        </div>
+
+        <div id="slide-final-content">
+            <p>"Toda tú eres hermosa, amiga mía, y en ti no hay mancha."</p>
+            <p><strong>Cantares 4:7 (RVR1960)</strong></p>
+            <p>Gracias por llegar a mi vida.</p>
+            <p>Te amaré por 3000 años más ✨</p>
+            <div class="firma">Atentamente: Tu Único y Verdadero Amor</div>
+        </div>
+    </div>
+
+    <script>
+        // Muestra el botón de comenzar tras 3 segundos
+        setTimeout(() => {
+            document.getElementById('btnGo').style.display = 'inline-block';
+        }, 3000);
+
+        function mostrarGaleria() {
+            document.getElementById('inicio').style.display = 'none';
+            document.getElementById('galeria').style.display = 'block';
+            actualizarLeyenda();
+            const media = items[index];
+            if(media.tagName === 'VIDEO') media.play();
+        }
+
+        let index = 0;
+        const items = document.querySelectorAll('.item-media');
+        let propuestaActivada = false;
+        let timerPropuesta;
+
+        function actualizarLeyenda() {
+            const actual = items[index];
+            document.getElementById('l-fecha').innerText = actual.getAttribute('data-f');
+            document.getElementById('l-texto').innerText = actual.getAttribute('data-t');
+            
+            if (index === 21 && !propuestaActivada) {
+                iniciarConteo(10);
+            }
+        }
+
+        function iniciarConteo(segundos) {
+            let seg = segundos;
+            const texto = document.getElementById('l-texto');
+            const base = "Tú y yo, el mejor equipo del mundo, solo falta... ";
+            
+            clearInterval(timerPropuesta);
+            timerPropuesta = setInterval(() => {
+                seg--;
+                texto.innerText = base + seg + "...";
+                if (seg <= 0) {
+                    clearInterval(timerPropuesta);
+                    document.getElementById('cuadro-propuesta').style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function cambiar(paso) {
+            if(items[index].tagName === 'VIDEO') items[index].pause();
+            
+            if (index === 21) {
+                clearInterval(timerPropuesta);
+                document.getElementById('cuadro-propuesta').style.display = 'none';
+            }
+
+            if (index === 21 && paso === 1 && !propuestaActivada) return;
+            if (index === items.length - 1 && paso === 1) return;
+
+            items[index].classList.remove('active');
+            index += paso;
+
+            if (index >= items.length) index = items.length - 1;
+            if (index < 0) index = 0;
+
+            items[index].classList.add('active');
+            actualizarLeyenda();
+
+            if(items[index].tagName === 'VIDEO') items[index].play();
+        }
+
+        function aceptarPropuesta() {
+            propuestaActivada = true; 
+            document.getElementById('cuadro-propuesta').style.display = 'none'; 
+            items[index].classList.remove('active'); 
+            document.querySelector('.contenedor-media').style.display = 'none';
+            document.getElementById('leyenda-container').style.display = 'none';
+            document.getElementById('slide-final-content').style.display = 'block'; 
+        }
+
+        function rechazarPropuesta() {
+            document.getElementById('texto-propuesta').innerText = "De mi no te vas a librar tan fácil, así que lo tomaré como un SÍ jajaja";
+            document.getElementById('botones-propuesta').innerHTML = '<button class="btn-propuesta-si" onclick="aceptarPropuesta()">¡Está bien, SÍ! ❤️</button>';
+            propuestaActivada = true;
+        }
+    </script>
+</body>
+</html>
